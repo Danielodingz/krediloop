@@ -3,6 +3,36 @@ import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Image from 'next/image';
+
+function DelayedVideo({ src, type, className }) {
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  useEffect(() => {
+    // Delay loading the video until the page transition has settled
+    // This prevents iOS Safari from crashing due to simultaneous memory spikes
+    const timer = setTimeout(() => {
+      setShouldLoad(true);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!shouldLoad) {
+    return <div className={`bg-[#0B163A] ${className}`} />;
+  }
+
+  return (
+    <video
+      autoPlay
+      loop
+      muted
+      playsInline
+      className={className}
+    >
+      <source src={src} type={type} />
+    </video>
+  );
+}
 
 function WaitlistForm() {
   const [firstName, setFirstName] = useState('');
@@ -131,7 +161,6 @@ function WaitlistForm() {
   );
 }
 
-import Image from 'next/image';
 
 export default function WaitlistPage() {
   return (
@@ -170,16 +199,11 @@ export default function WaitlistPage() {
 
           {/* Dark Container (Right) */}
           <div className="bg-[#0B163A] rounded-[18px] w-full max-w-[544px] h-[350px] lg:h-[501px] sticky lg:relative top-[110px] lg:top-auto z-0 lg:z-20 shadow-2xl flex flex-col items-center justify-center order-1 lg:order-2 mt-0 lg:mt-[48px] -mb-8 lg:mb-0 lg:-ml-[70px] overflow-hidden transform-gpu will-change-transform">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover z-0"
-            >
-              <source src="/dark-container.webm" type="video/webm" />
-              Your browser does not support the video tag.
-            </video>
+            <DelayedVideo 
+              src="/dark-container.webm" 
+              type="video/webm" 
+              className="absolute inset-0 w-full h-full object-cover z-0" 
+            />
           </div>
 
         </div>
