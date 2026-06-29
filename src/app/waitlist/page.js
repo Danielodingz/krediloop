@@ -123,6 +123,8 @@ function WaitlistForm() {
   );
 }
 
+import Image from 'next/image';
+
 export default function WaitlistPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#EBF0FF]">
@@ -132,8 +134,15 @@ export default function WaitlistPage() {
       <main
         className="flex-grow pt-[130px] lg:pt-[280px] pb-20 px-4 md:px-8 flex flex-col items-center justify-center bg-center bg-no-repeat relative"
       >
-        <div>
-          <img className="absolute inset-0 w-full h-full object-cover object-bottom z-0" src="/join-waitlist-background.png" alt="" />
+        <div className="absolute inset-0 w-full h-full z-0">
+          <Image 
+            src="/join-waitlist-background.png" 
+            alt="Background" 
+            fill
+            priority
+            quality={75}
+            className="object-cover object-bottom" 
+          />
         </div>
         <div className="absolute inset-0 bg-[#EBF0FF]/40 z-0 pointer-events-none"></div>
 
@@ -152,7 +161,7 @@ export default function WaitlistPage() {
           </div>
 
           {/* Dark Container (Right) */}
-          <div className="bg-[#0B163A] rounded-[18px] w-full max-w-[544px] h-[350px] lg:h-[501px] sticky lg:relative top-[110px] lg:top-auto z-0 lg:z-20 shadow-2xl flex flex-col items-center justify-center order-1 lg:order-2 mt-0 lg:mt-[48px] -mb-8 lg:mb-0 lg:-ml-[70px] overflow-hidden">
+          <div className="bg-[#0B163A] rounded-[18px] w-full max-w-[544px] h-[350px] lg:h-[501px] sticky lg:relative top-[110px] lg:top-auto z-0 lg:z-20 shadow-2xl flex flex-col items-center justify-center order-1 lg:order-2 mt-0 lg:mt-[48px] -mb-8 lg:mb-0 lg:-ml-[70px] overflow-hidden transform-gpu will-change-transform">
             <video
               autoPlay
               loop
