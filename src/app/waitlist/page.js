@@ -1,5 +1,6 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -9,6 +10,11 @@ function WaitlistForm() {
   const [email, setEmail] = useState('');
   const [showModal, setShowModal] = useState(false);
   const modalVideoRef = useRef(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,6 +34,46 @@ function WaitlistForm() {
     setLastName('');
     setEmail('');
   };
+
+  const modalContent = showModal ? (
+    <div
+      className="fixed inset-0 z-[100] flex items-end md:items-center justify-center"
+      onClick={closeModal}
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+
+      {/* Modal container */}
+      <div
+        className="relative z-10 w-full md:w-auto md:max-w-[520px] md:mx-4 bg-[#0B163A] overflow-hidden rounded-t-[28px] md:rounded-[28px] shadow-[0_24px_80px_rgba(0,0,0,0.6)] waitlist-modal"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Video */}
+        <video
+          ref={modalVideoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-[420px] md:h-[480px] object-cover"
+        >
+          <source src="/waitlist.mp4" type="video/mp4" />
+        </video>
+
+        {/* X close button top-right */}
+        <button
+          onClick={closeModal}
+          aria-label="Close"
+          className="absolute top-4 right-4 z-20 w-9 h-9 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/25 transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  ) : null;
 
   return (
     <>
@@ -79,46 +125,8 @@ function WaitlistForm() {
         </div>
       </form>
 
-      {/* ── Success Modal ── */}
-      {showModal && (
-        <div
-          className="fixed inset-0 z-[100] flex items-end md:items-center justify-center"
-          onClick={closeModal}
-        >
-          {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-
-          {/* Modal container */}
-          <div
-            className="relative z-10 w-full md:w-auto md:max-w-[520px] md:mx-4 bg-[#0B163A] overflow-hidden rounded-t-[28px] md:rounded-[28px] shadow-[0_24px_80px_rgba(0,0,0,0.6)] waitlist-modal"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Video */}
-            <video
-              ref={modalVideoRef}
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-[420px] md:h-[480px] object-cover"
-            >
-              <source src="/waitlist.mp4" type="video/mp4" />
-            </video>
-
-            {/* X close button top-right */}
-            <button
-              onClick={closeModal}
-              aria-label="Close"
-              className="absolute top-4 right-4 z-20 w-9 h-9 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/25 transition-colors"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      )}
+      {/* ── Success Modal (Portaled to document.body) ── */}
+      {mounted && modalContent && createPortal(modalContent, document.body)}
     </>
   );
 }
