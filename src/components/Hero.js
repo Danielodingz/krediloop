@@ -1,4 +1,5 @@
 import RotatingWord from './RotatingWord';
+import Link from 'next/link';
 
 export default function Hero() {
   return (
@@ -32,9 +33,9 @@ export default function Hero() {
         </div>
 
         {/* Waitlist Button */}
-        <button className="bg-[#2F5CF0] text-white flex items-center justify-center w-[148px] h-[54px] md:w-[174px] md:h-[54px] text-[15px] md:text-[19px] rounded-xl font-semibold tracking-wide border-2 border-white shadow-[0_8px_16px_rgba(47,92,240,0.3)] transition-all duration-300 md:hover:scale-110 md:hover:-translate-y-1 md:hover:shadow-[0_12px_28px_rgba(47,92,240,0.55)] mb-8 md:mb-16">
+        <Link href="/waitlist" className="bg-[#2F5CF0] !text-white text-[#FFFFFF] flex items-center justify-center w-[148px] h-[54px] md:w-[174px] md:h-[54px] text-[15px] md:text-[19px] rounded-xl font-semibold tracking-wide border-2 border-white shadow-[0_8px_16px_rgba(47,92,240,0.3)] transition-all duration-300 md:hover:scale-110 md:hover:-translate-y-1 md:hover:shadow-[0_12px_28px_rgba(47,92,240,0.55)] mb-8 md:mb-16">
           Join Waitlist
-        </button>
+        </Link>
 
       </div>
 

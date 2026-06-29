@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function Footer() {
   return (
     <footer className="bg-[#0B163A] text-white py-16 px-6 relative overflow-hidden">
@@ -60,9 +62,9 @@ export default function Footer() {
             Create groups, track contributions, and reach your goals faster. Start your journey to financial freedom with KrediLoop today.
           </p>
 
-          <button className="bg-white text-[#2F5CF0] border-2 border-[#2F5CF0] px-6 md:px-8 py-3 rounded-[12px] text-[15px] md:text-[19px] font-semibold tracking-wide transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 md:hover:shadow-[0_10px_25px_rgba(47,92,240,0.35)] md:hover:bg-blue-50">
+          <Link href="/waitlist" className="bg-white inline-block text-center !text-[#2F5CF0] border-2 border-[#2F5CF0] px-6 md:px-8 py-3 rounded-[12px] text-[15px] md:text-[19px] font-semibold tracking-wide transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 md:hover:shadow-[0_10px_25px_rgba(47,92,240,0.35)] md:hover:bg-blue-50">
             Join Waitlist
-          </button>
+          </Link>
         </div>
 
       </div>

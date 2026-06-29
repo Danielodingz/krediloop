@@ -32,7 +32,7 @@ export default function FAQ() {
   };
 
   return (
-    <section className="py-16 md:py-24 px-4 md:px-9 max-w-[1232px] mx-auto">
+    <section id="faqs" className="py-16 md:py-24 px-4 md:px-9 max-w-[1232px] mx-auto">
       <h2 className="text-[24px] md:text-[54px] font-semibold text-center mb-10 md:mb-16 leading-tight">
         Everything You <span className="text-[#2F5CF0]">Need</span> to Know
       </h2>
