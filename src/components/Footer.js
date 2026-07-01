@@ -34,12 +34,12 @@ export default function Footer() {
               <span className="text-sm font-semibold mb-3 md:mb-4">Contact us</span>
               <div className="flex space-x-2 md:space-x-3">
                 {[
-                  { name: 'Twitter', icon: '/twitter.svg' },
-                  { name: 'Instagram', icon: '/instagram.svg' },
-                  { name: 'Email', icon: '/email.svg' },
-                  { name: 'Telegram', icon: '/telegram.svg' },
+                  { name: 'Twitter', icon: '/twitter.svg', url: 'https://x.com/KrediLoopNG' },
+                  { name: 'Instagram', icon: '/instagram.svg', url: 'https://www.instagram.com/krediloopng?igsh=anpjeHRmcDY0aThp&utm_source=qr' },
+                  { name: 'Email', icon: '/email.svg', url: 'mailto:krediloopng@gmail.com' },
+                  { name: 'Telegram', icon: '/telegram.svg', url: 'https://telegram.com' },
                 ].map((social) => (
-                  <a key={social.name} href="#" className="w-[36px] h-[36px] md:w-[48px] md:h-[48px] flex items-center justify-center transition-all duration-300 md:hover:scale-110 md:hover:-translate-y-1 md:hover:opacity-80">
+                  <a key={social.name} href={social.url} target="_blank" rel="noopener noreferrer" className="w-[36px] h-[36px] md:w-[48px] md:h-[48px] flex items-center justify-center transition-all duration-300 md:hover:scale-110 md:hover:-translate-y-1 md:hover:opacity-80">
                     <img src={social.icon} alt={social.name} className="w-full h-full object-contain" />
                   </a>
                 ))}
