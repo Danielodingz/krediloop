@@ -170,7 +170,7 @@ export function waitlistEmailTemplate(firstName) {
                       — Desmond
                     </p>
                     <p style="margin:0;font-size:14px;line-height:22px;color:#6B7280;">
-                      Founder, KrediLoop
+                      Founder, KrediLoopNG
                     </p>
                   </td>
                 </tr>
