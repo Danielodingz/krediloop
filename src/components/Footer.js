@@ -35,9 +35,9 @@ export default function Footer() {
               <div className="flex space-x-2 md:space-x-3">
                 {[
                   { name: 'Twitter', icon: '/twitter.svg' },
-                  { name: 'LinkedIn', icon: '/linkedin.svg' },
+                  { name: 'Instagram', icon: '/instagram.svg' },
                   { name: 'Email', icon: '/email.svg' },
-                  { name: 'WhatsApp', icon: '/whatsapp.svg' },
+                  { name: 'Telegram', icon: '/telegram.svg' },
                 ].map((social) => (
                   <a key={social.name} href="#" className="w-[36px] h-[36px] md:w-[48px] md:h-[48px] flex items-center justify-center transition-all duration-300 md:hover:scale-110 md:hover:-translate-y-1 md:hover:opacity-80">
                     <img src={social.icon} alt={social.name} className="w-full h-full object-contain" />

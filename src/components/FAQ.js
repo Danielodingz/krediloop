@@ -8,7 +8,7 @@ const faqs = [
   },
   {
     question: "How does KrediLoop work?",
-    answer: "Users can create or join a savings group, contribute periodically, and take turns receiving the pooled funds. KrediLoop tracks all transactions to build your credit score."
+    answer: "Users can join or create a savings circle, make regular contributions, and receive your payout when it's your turn. KrediLoop brings traditional Ajo into the digital age with stablecoins, transparent savings, and credit score building—all in one secure platform."
   },
   {
     question: "Is my money safe with KrediLoop?",
@@ -20,7 +20,7 @@ const faqs = [
   },
   {
     question: "How do I access the loans if I need an immediate savings payout?",
-    answer: "As you build credit history with your group, KrediLoop may offer instant micro-loans backed by your savings profile."
+    answer: "We partner with trusted and verified lending companies to offer loans to eligible users based on their credit score and eligibility criteria."
   }
 ];
 

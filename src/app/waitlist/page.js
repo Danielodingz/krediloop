@@ -1,6 +1,6 @@
 'use client';
-import { useState, useRef, useEffect } from 'react';
-import { createPortal } from 'react-dom';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
@@ -35,75 +35,41 @@ function DelayedVideo({ src, type, className }) {
 }
 
 function WaitlistForm() {
+  const router = useRouter();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [showModal, setShowModal] = useState(false);
-  const modalVideoRef = useRef(null);
-  const [mounted, setMounted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (firstName.trim() && lastName.trim() && email.trim()) {
-      setShowModal(true);
-      setTimeout(() => {
-        if (modalVideoRef.current) {
-          modalVideoRef.current.playbackRate = 3;
-        }
-      }, 50);
+    setErrorMessage('');
+    setIsLoading(true);
+
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ firstName, lastName, email }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        // Redirect to the dedicated success page
+        router.push('/waitlist/success');
+        return;
+      }
+
+      // Surface a user-friendly error message
+      setErrorMessage(data.error || 'Something went wrong. Please try again.');
+    } catch {
+      setErrorMessage('Network error. Please check your connection and try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
-
-  const closeModal = () => {
-    setShowModal(false);
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-  };
-
-  const modalContent = showModal ? (
-    <div
-      className="fixed inset-0 z-[100] flex items-end md:items-center justify-center"
-      onClick={closeModal}
-    >
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-
-      {/* Modal container */}
-      <div
-        className="relative z-10 w-full md:w-auto md:max-w-[520px] md:mx-4 bg-[#0B163A] overflow-hidden rounded-t-[28px] md:rounded-[28px] shadow-[0_24px_80px_rgba(0,0,0,0.6)] waitlist-modal"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Video */}
-        <video
-          ref={modalVideoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-[420px] md:h-[480px] object-cover"
-        >
-          <source src="/waitlist.mp4" type="video/mp4" />
-        </video>
-
-        {/* X close button top-right */}
-        <button
-          onClick={closeModal}
-          aria-label="Close"
-          className="absolute top-4 right-4 z-20 w-9 h-9 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/25 transition-colors"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      </div>
-    </div>
-  ) : null;
 
   return (
     <>
@@ -116,6 +82,7 @@ function WaitlistForm() {
             onChange={(e) => setFirstName(e.target.value)}
             className="w-full bg-white px-5 py-[16px] rounded-[12px] focus:outline-none focus:ring-2 focus:ring-[#2F5CF0] text-[16px] md:text-[12px] placeholder-[#838383] transition-all"
             required
+            disabled={isLoading}
           />
           <input
             type="text"
@@ -124,6 +91,7 @@ function WaitlistForm() {
             onChange={(e) => setLastName(e.target.value)}
             className="w-full bg-white px-5 py-[16px] rounded-[12px] focus:outline-none focus:ring-2 focus:ring-[#2F5CF0] text-[16px] md:text-[12px] placeholder-[#838383] transition-all"
             required
+            disabled={isLoading}
           />
         </div>
         <input
@@ -133,7 +101,15 @@ function WaitlistForm() {
           onChange={(e) => setEmail(e.target.value)}
           className="w-full bg-white px-5 py-[16px] rounded-[12px] focus:outline-none focus:ring-2 focus:ring-[#2F5CF0] text-[16px] md:text-[12px] placeholder-[#838383] transition-all"
           required
+          disabled={isLoading}
         />
+
+        {/* ── Inline error message ── */}
+        {errorMessage && (
+          <p className="text-[13px] text-red-600 text-center -mt-2">
+            {errorMessage}
+          </p>
+        )}
 
         <div className="flex items-center justify-center gap-2 mt-2 mb-2">
           <span className="text-[10px] text-[#514F4F]">By joining, you agree to receive emails from</span>
@@ -145,18 +121,16 @@ function WaitlistForm() {
 
         <button
           type="submit"
-          className="w-full bg-[#2F5CF0] text-white font-semibold text-[19px] h-[52px] rounded-[12px] hover:bg-blue-700 transition-colors border-2 border-white shadow-sm flex items-center justify-center"
+          disabled={isLoading}
+          className="w-full bg-[#2F5CF0] text-white font-semibold text-[19px] h-[52px] rounded-[12px] hover:bg-blue-700 transition-colors border-2 border-white shadow-sm flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
         >
-          Get Early Access
+          {isLoading ? 'Submitting…' : 'Get Early Access'}
         </button>
 
         <div className="text-center mt-3">
           <span className="text-[12px] text-[#2F5CF0]">Read our <a href="#" className="text-[#2F5CF0] hover:underline">Privacy Policy</a></span>
         </div>
       </form>
-
-      {/* ── Success Modal (Portaled to document.body) ── */}
-      {mounted && modalContent && createPortal(modalContent, document.body)}
     </>
   );
 }
